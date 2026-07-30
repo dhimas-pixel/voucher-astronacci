@@ -80,7 +80,7 @@ export default function Welcome() {
                 aircraft_type: data.aircraft_type,
             });
 
-            if (response.data.status === "success") {
+            if (response.data.status === true) {
                 setSuccessMessage(response.data.message);
                 setGeneratedSeats(response.data.data.seats);
                 setCanGenerate(false);
