@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class VoucherAssignment extends Model
 {
+    use HasFactory;
+
     protected $table = 't_voucher_assignments';
 
     protected $fillable = [

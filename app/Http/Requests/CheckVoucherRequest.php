@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
 
 class CheckVoucherRequest extends FormRequest
 {
@@ -25,6 +28,17 @@ class CheckVoucherRequest extends FormRequest
             'flight_number' => ['required', 'string'],
             'flight_date'   => ['required', 'date', 'after_or_equal:today'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $response = response()->json([
+            'status'  => false,
+            'message' => (new ValidationException($validator))->getMessage(),
+            'errors'  => $validator->errors()
+        ], 422);
+
+        throw new HttpResponseException($response);
     }
 
     public function messages(): array

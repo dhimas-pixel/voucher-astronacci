@@ -58,7 +58,7 @@ class VoucherController extends Controller
 
             if ($isVoucherExists) {
                 return (new ApiResponseResource([
-                    'status'  => 'error',
+                    'status'  => false,
                     'message' => 'Nomor Voucher & Tanggal Penerbangan sudah ada untuk penerbangan ini.',
                     'data'    => null
                 ]))->response()->setStatusCode(400);
@@ -70,7 +70,7 @@ class VoucherController extends Controller
                 $validated['flight_date']
             );
 
-            $voucher = VoucherAssignment::create([
+            VoucherAssignment::create([
                 'crew_name'     => $validated['crew_name'],
                 'crew_id'       => $validated['crew_id'],
                 'flight_number' => $validated['flight_number'],
@@ -82,13 +82,13 @@ class VoucherController extends Controller
             ]);
 
             return (new ApiResponseResource([
-                'status'  => 'success',
+                'status'  => true,
                 'message' => 'Voucher berhasil di-generate!',
                 'data'    => new GenerateVoucherResource(['seats' => $generatedSeats])
             ]))->response()->setStatusCode(201);
         } catch (\Exception $e) {
             return response()->json([
-                'status'  => 'error',
+                'status'  => false,
                 'message' => 'Terjadi kesalahan pada server saat generate voucher.',
                 'error'   => $e->getMessage(),
             ], 500);
